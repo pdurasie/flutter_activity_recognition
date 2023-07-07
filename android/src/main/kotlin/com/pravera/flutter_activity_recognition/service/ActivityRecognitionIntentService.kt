@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.android.gms.location.ActivityRecognitionResult
+import com.google.android.gms.location.ActivityTransitionResult
 import com.google.gson.Gson
 import com.pravera.flutter_activity_recognition.Constants
 import com.pravera.flutter_activity_recognition.errors.ErrorCodes
@@ -20,20 +21,13 @@ class ActivityRecognitionIntentService: JobIntentService() {
 	}
 
 	override fun onHandleWork(intent: Intent) {
-		val extractedResult = ActivityRecognitionResult.extractResult(intent)
-		val probableActivities = extractedResult?.probableActivities
-		val mostProbableActivity = probableActivities?.maxByOrNull { it.confidence } ?: return
-
-		val activityData = ActivityData(
-			ActivityRecognitionUtils.getActivityTypeFromValue(mostProbableActivity.type),
-			ActivityRecognitionUtils.getActivityConfidenceFromValue(mostProbableActivity.confidence)
-		)
+		val extractedResult = ActivityTransitionResult.extractResult(intent)
 
 		var prefsKey: String
 		var prefsValue: String
 		try {
 			prefsKey = Constants.ACTIVITY_DATA_PREFS_KEY
-			prefsValue = jsonConverter.toJson(activityData)
+			prefsValue = jsonConverter.toJson(extractedResult)
 		} catch (e: Exception) {
 			prefsKey = Constants.ACTIVITY_ERROR_PREFS_KEY
 			prefsValue = ErrorCodes.ACTIVITY_DATA_ENCODING_FAILED.toString()

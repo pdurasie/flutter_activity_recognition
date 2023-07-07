@@ -16,7 +16,7 @@ class StreamHandlerImpl(private val context: Context): EventChannel.StreamHandle
 
 	fun startListening(messenger: BinaryMessenger) {
 		activityRecognitionManager = ActivityRecognitionManager()
-		eventChannel = EventChannel(messenger, "flutter_activity_recognition/updates")
+		eventChannel = EventChannel(messenger, "driver.sendit.green.transitions")
 		eventChannel.setStreamHandler(this)
 	}
 
