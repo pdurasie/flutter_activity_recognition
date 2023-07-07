@@ -24,7 +24,7 @@ class FlutterActivityRecognition {
   final _methodChannel = MethodChannel('flutter_activity_recognition/method');
 
   /// Event channel to communicate with the platform.
-  final _eventChannel = EventChannel('flutter_activity_recognition/updates');
+  final _eventChannel = EventChannel('driver.sendit.green.transitions');
 
   /// Gets the activity stream.
   Stream<Activity> get activityStream {
