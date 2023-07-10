@@ -1,7 +1,7 @@
 name: flutter_activity_recognition
 description: This plugin is used to recognize user activity on Android and iOS platforms.
 version: 2.0.0
-homepage: https://github.com/Dev-hwang/flutter_activity_recognition
+homepage: https://github.com/pdurasie/flutter_activity_recognition
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
