@@ -35,7 +35,10 @@ class FlutterActivityRecognition {
         final transitionType =
             TransitionType.fromString(data['transitionType']);
         final recognizedAt = DateTime.tryParse(data['recognizedAt']);
-        return ActivityTransition(activityType, transitionType, recognizedAt);
+        return ActivityTransition(
+            activityType: activityType,
+            transitionType: transitionType,
+            recognizedAt: recognizedAt);
       }).toList();
     });
   }
