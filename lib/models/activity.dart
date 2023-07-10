@@ -14,7 +14,9 @@ class ActivityTransition {
 
   /// Constructs an instance of [ActivityTransition].
   const ActivityTransition(
-      this.activityType, this.transitionType, this.recognizedAt);
+      {required this.activityType,
+      required this.transitionType,
+      this.recognizedAt});
 
   /// Returns the data fields of [ActivityTransition] in JSON format.
   Map<String, dynamic> toJson() => {
