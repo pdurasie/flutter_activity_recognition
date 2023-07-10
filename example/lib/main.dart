@@ -12,12 +12,13 @@ class ExampleApp extends StatefulWidget {
 }
 
 class _ExampleAppState extends State<ExampleApp> {
-  final _activityStreamController = StreamController<ActivityTransition>();
-  StreamSubscription<ActivityTransition>? _activityStreamSubscription;
+  final _activityStreamController =
+      StreamController<List<ActivityTransition>>();
+  StreamSubscription<List<ActivityTransition>>? _activityStreamSubscription;
 
-  void _onActivityReceive(ActivityTransition activity) {
-    dev.log('Activity Detected >> ${activity.toJson()}');
-    _activityStreamController.sink.add(activity);
+  void _onActivityReceive(List<ActivityTransition> activities) {
+    dev.log('Activites Detected >> ${activities.join("\n")}');
+    _activityStreamController.sink.add(activities);
   }
 
   void _handleError(dynamic error) {
@@ -27,7 +28,7 @@ class _ExampleAppState extends State<ExampleApp> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final activityRecognition = FlutterActivityRecognition.instance;
 
       // Check if the user has granted permission. If not, request permission.
@@ -70,11 +71,12 @@ class _ExampleAppState extends State<ExampleApp> {
   }
 
   Widget _buildContentView() {
-    return StreamBuilder<ActivityTransition>(
+    return StreamBuilder<List<ActivityTransition>>(
         stream: _activityStreamController.stream,
         builder: (context, snapshot) {
           final updatedDateTime = DateTime.now();
-          final content = snapshot.data?.toJson().toString() ?? '';
+          final content =
+              snapshot.data?.map((e) => e.toJson()).toString() ?? '';
 
           return ListView(
               physics: const BouncingScrollPhysics(),
