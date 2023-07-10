@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_activity_recognition/models/activity.dart';
-import 'package:flutter_activity_recognition/models/activity_confidence.dart';
 import 'package:flutter_activity_recognition/models/activity_type.dart';
 import 'package:flutter_activity_recognition/models/permission_request_result.dart';
+import 'package:flutter_activity_recognition/models/transition_type.dart';
 
 export 'package:flutter_activity_recognition/models/activity.dart';
 export 'package:flutter_activity_recognition/models/activity_confidence.dart';
@@ -27,12 +27,16 @@ class FlutterActivityRecognition {
   final _eventChannel = EventChannel('driver.sendit.green.transitions');
 
   /// Gets the activity stream.
-  Stream<Activity> get activityStream {
+  Stream<List<ActivityTransition>> get activityTransitionStream {
     return _eventChannel.receiveBroadcastStream().map((event) {
-      final data = Map<String, dynamic>.from(jsonDecode(event));
-      final type = getActivityTypeFromString(data['type']);
-      final confidence = getActivityConfidenceFromString(data['confidence']);
-      return Activity(type, confidence);
+      final dataList = List<Map<String, dynamic>>.from(jsonDecode(event));
+      return dataList.map((data) {
+        final activityType = getActivityTypeFromString(data['activityType']);
+        final transitionType =
+            TransitionType.fromString(data['transitionType']);
+        final recognizedAt = DateTime.tryParse(data['recognizedAt']);
+        return ActivityTransition(activityType, transitionType, recognizedAt);
+      }).toList();
     });
   }
 

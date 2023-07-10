@@ -12,10 +12,10 @@ class ExampleApp extends StatefulWidget {
 }
 
 class _ExampleAppState extends State<ExampleApp> {
-  final _activityStreamController = StreamController<Activity>();
-  StreamSubscription<Activity>? _activityStreamSubscription;
+  final _activityStreamController = StreamController<ActivityTransition>();
+  StreamSubscription<ActivityTransition>? _activityStreamSubscription;
 
-  void _onActivityReceive(Activity activity) {
+  void _onActivityReceive(ActivityTransition activity) {
     dev.log('Activity Detected >> ${activity.toJson()}');
     _activityStreamController.sink.add(activity);
   }
@@ -45,7 +45,7 @@ class _ExampleAppState extends State<ExampleApp> {
       }
 
       // Subscribe to the activity stream.
-      _activityStreamSubscription = activityRecognition.activityStream
+      _activityStreamSubscription = activityRecognition.activityTransitionStream
           .handleError(_handleError)
           .listen(_onActivityReceive);
     });
@@ -55,12 +55,10 @@ class _ExampleAppState extends State<ExampleApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Activity Recognition'),
-          centerTitle: true
-        ),
-        body: _buildContentView()
-      ),
+          appBar: AppBar(
+              title: const Text('Flutter Activity Recognition'),
+              centerTitle: true),
+          body: _buildContentView()),
     );
   }
 
@@ -72,22 +70,20 @@ class _ExampleAppState extends State<ExampleApp> {
   }
 
   Widget _buildContentView() {
-    return StreamBuilder<Activity>(
-      stream: _activityStreamController.stream,
-      builder: (context, snapshot) {
-        final updatedDateTime = DateTime.now();
-        final content = snapshot.data?.toJson().toString() ?? '';
+    return StreamBuilder<ActivityTransition>(
+        stream: _activityStreamController.stream,
+        builder: (context, snapshot) {
+          final updatedDateTime = DateTime.now();
+          final content = snapshot.data?.toJson().toString() ?? '';
 
-        return ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(8.0),
-          children: [
-            Text('•\t\tActivity (updated: $updatedDateTime)'),
-            SizedBox(height: 10.0),
-            Text(content)
-          ]
-        );
-      }
-    );
+          return ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(8.0),
+              children: [
+                Text('•\t\tActivity (updated: $updatedDateTime)'),
+                SizedBox(height: 10.0),
+                Text(content)
+              ]);
+        });
   }
 }

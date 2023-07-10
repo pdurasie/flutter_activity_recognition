@@ -1,6 +1,10 @@
 package com.pravera.flutter_activity_recognition.utils
 
+import android.os.SystemClock
+import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.DetectedActivity
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ActivityRecognitionUtils {
 	companion object {
@@ -17,12 +21,22 @@ class ActivityRecognitionUtils {
 			}
 		}
 
-		fun getActivityConfidenceFromValue(confidence: Int): String {
-			return when (confidence) {
-				in 80..100 -> "HIGH"
-				in 50..80 -> "MEDIUM"
-				else -> "LOW"
+		fun getActivityTransitionTypeFromValue(type: Int): String {
+			return when(type) {
+				ActivityTransition.ACTIVITY_TRANSITION_ENTER -> "ENTER"
+				ActivityTransition.ACTIVITY_TRANSITION_EXIT -> "EXIT"
+				else -> "UNKNOWN"
+
 			}
+		}
+
+		fun getDateFromElapsedRealtimeNanos(nanos: Long): Date {
+			val currentTimeMillis = System.currentTimeMillis()
+			val elapsedRealTimeMillis = SystemClock.elapsedRealtime()
+			val bootTimeMillis = currentTimeMillis - elapsedRealTimeMillis
+			val yourTimestampMillis = TimeUnit.NANOSECONDS.toMillis(nanos)
+
+			return Date(bootTimeMillis + yourTimestampMillis)
 		}
 	}
 }
