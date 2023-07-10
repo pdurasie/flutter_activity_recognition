@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.android.gms.location.ActivityTransitionResult
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.pravera.flutter_activity_recognition.Constants
 import com.pravera.flutter_activity_recognition.errors.ErrorCodes
 import com.pravera.flutter_activity_recognition.models.ActivityTransitionData
@@ -12,7 +13,7 @@ import com.pravera.flutter_activity_recognition.utils.ActivityRecognitionUtils
 
 class ActivityRecognitionIntentService : JobIntentService() {
     companion object {
-        val jsonConverter: Gson = Gson()
+        val jsonConverter: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create()
         fun enqueueWork(context: Context, intent: Intent) {
             enqueueWork(
                 context, ActivityRecognitionIntentService::class.java,

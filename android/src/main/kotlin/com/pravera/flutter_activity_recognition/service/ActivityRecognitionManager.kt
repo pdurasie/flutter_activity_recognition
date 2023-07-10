@@ -110,6 +110,7 @@ class ActivityRecognitionManager: SharedPreferences.OnSharedPreferenceChangeList
 
 	private fun buildTransitionRequest(): ActivityTransitionRequest {
 		val transitions: MutableList<ActivityTransition> = ArrayList()
+
 		val transitionIn = ActivityTransition.Builder()
 			.setActivityType(DetectedActivity.IN_VEHICLE)
 			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
@@ -119,26 +120,7 @@ class ActivityRecognitionManager: SharedPreferences.OnSharedPreferenceChangeList
 			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
 			.build()
 
-		// These here are for testing
-		val transitionInTEST = ActivityTransition.Builder()
-			.setActivityType(DetectedActivity.STILL)
-			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-			.build()
-		val transitionOutTEST = ActivityTransition.Builder()
-			.setActivityType(DetectedActivity.STILL)
-			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-			.build()
-
-		val transitionInTESTONE = ActivityTransition.Builder()
-			.setActivityType(DetectedActivity.WALKING)
-			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-			.build()
-		val transitionOutTESTONE = ActivityTransition.Builder()
-			.setActivityType(DetectedActivity.WALKING)
-			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
-			.build()
-
-		arrayOf(transitionIn, transitionOut, transitionInTEST, transitionOutTEST, transitionInTESTONE, transitionOutTESTONE).map { transitions.add(it) }
+		arrayOf(transitionIn, transitionOut).map { transitions.add(it) }
 		return ActivityTransitionRequest(transitions)
 	}
 }
