@@ -120,7 +120,25 @@ class ActivityRecognitionManager: SharedPreferences.OnSharedPreferenceChangeList
 			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
 			.build()
 
-		arrayOf(transitionIn, transitionOut).map { transitions.add(it) }
+		val transitionInOne = ActivityTransition.Builder()
+			.setActivityType(DetectedActivity.STILL)
+			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+			.build()
+		val transitionOutOne = ActivityTransition.Builder()
+			.setActivityType(DetectedActivity.STILL)
+			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+			.build()
+
+		val transitionInTwo = ActivityTransition.Builder()
+			.setActivityType(DetectedActivity.ON_FOOT)
+			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
+			.build()
+		val transitionOutTwo = ActivityTransition.Builder()
+			.setActivityType(DetectedActivity.ON_FOOT)
+			.setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+			.build()
+
+		arrayOf(transitionIn, transitionOut, transitionInOne, transitionOutOne, transitionInTwo, transitionOutTwo).map { transitions.add(it) }
 		return ActivityTransitionRequest(transitions)
 	}
 }
